@@ -107,8 +107,8 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <div class="card-title">List of Task</div>
-                        <div class="card-category">Monitor your list here</div>
+                        <div class="card-title">List of Note</div>
+                        <div class="card-category">More information</div>
                     </div>
 
                     <br />
@@ -130,8 +130,8 @@
 
                         <div class="col-md-6">
                             <div class="pull-right">
-                                <a href="{% url 'task-add' %}" class="btn btn-success btn-rounded">
-                                    Add Task
+                                <a href="{% url 'note-add' %}" class="btn btn-success btn-rounded">
+                                    Add Note
                                 </a>
                             </div>
                         </div>
@@ -141,12 +141,9 @@
                         <table class="table table-striped mt-3">
                             <thead>
                                 <tr>
-                                    <th scope="col">Title</th>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Deadline</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Priority</th>
-                                    <th scope="col">Category</th>
+                                    <th scope="col">Task Title</th>
+                                    <th scope="col">Content</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -154,22 +151,19 @@
                             <tbody>
                                 {% for object in object_list %}
                                 <tr>
-                                    <td>{{ object.title }}</td>
                                     <td>{{ object.id }}</td>
-                                    <td>{{ object.deadline }}</td>
-                                    <td>{{ object.status }}</td>
-                                    <td>{{ object.priority.name }}</td>
-                                    <td>{{ object.category.name }}</td>
+                                    <td>{{ object.task.title }}</td>
+                                    <td>{{ object.content }}</td>
                                     <td>
-                                        <a href="task_list/{{ object.id }}">Edit</a>
-                                        <a href="task_list/{{ object.id }}/delete" class="text_danger">Delete</a>
+                                        <a href="note_list/{{ object.id }}">Edit</a>
+                                        <a href="note_list/{{ object.id }}/delete" class="text_danger">Delete</a>
                                     </td>
                                 </tr>
 
                                 {% empty %}
 
                                 <tr>
-                                    <td colspan="7" style="text-align: center">
+                                    <td colspan="4" style="text-align: center">
                                         <p class="text-sm font-weight-bold mb-0">No Records Found</p>
                                     </td>
                                 </tr>
