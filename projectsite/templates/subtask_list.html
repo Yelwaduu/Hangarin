@@ -32,7 +32,8 @@
     .card-body,
     .table,
     .table th,
-    .table td {
+    .table td,
+    .col-form-label {
         color: #fff !important;
     }
 
@@ -60,14 +61,57 @@
         border-radius: 0 20px 20px 0 !important;
     }
 
-    .btn-success {
+    /* Sort bar */
+    .sort-bar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+        padding: 0 15px;
+    }
+
+    .sort-bar .col-form-label {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Sort dropdown */
+    .card select.form-control {
+        border-radius: 20px !important;
+        height: 34px;
+        padding: 0 2.2rem 0 1rem;
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23A3BF72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 12px 8px;
+    }
+
+    .card select.form-control:focus {
+        border-color: #A3BF72 !important;
+        box-shadow: 0 0 0 2px rgba(107, 142, 58, 0.35) !important;
+        outline: none;
+    }
+
+    .card select.form-control option {
+        background-color: #333;
+        color: #fff;
+    }
+
+    .btn-success,
+    .btn-primary {
         background-color: #6B8E3A !important;
         border-color: #6B8E3A !important;
         color: white !important;
         font-weight: bold;
     }
 
-    .btn-success:hover {
+    .btn-success:hover,
+    .btn-primary:hover {
         background-color: #fff !important;
         border-color: #fff !important;
         color: #000 !important;
@@ -96,6 +140,27 @@
         color: #777 !important;
         border-color: #555 !important;
     }
+    .card button.input-group-text {
+    cursor: pointer;
+}
+
+.card button.input-group-text:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(107, 142, 58, 0.35);
+}
+
+.card button.input-group-text:hover {
+    background-color: #A3BF72 !important;
+}
+body,
+.main-panel,
+.main-panel > .content {
+    background-color: #22261f !important;
+}
+
+.page-title {
+    color: #fff !important;
+}
 </style>
 
 <div class="content">
@@ -117,12 +182,12 @@
                         <div class="col-md-6">
                             <form class="navbar-left navbar-form nav-search mr-md-3" action="">
                                 <div class="input-group">
-                                    <input type="text" placeholder="Search ..." class="form-control" />
+                                    <input type="text" placeholder="Search ..." class="form-control" name="q" />
 
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="la la-search search-icon"></i>
-                                        </span>
+                                        <button type="submit" class="input-group-text">
+        <i class="la la-search search-icon"></i>
+    </button>
                                     </div>
                                 </div>
                             </form>
@@ -135,6 +200,19 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="sort-bar">
+                        <form method="get" class="d-flex align-items-center" style="gap: 10px;">
+
+                            <select class="form-control form-control-sm" id="smallSelect" name="sort_by">
+                                <option value="title" {% if request.GET.sort_by == "title" %}selected{% endif %}>Title</option>
+                                <option value="parent_task__title" {% if request.GET.sort_by == "parent_task__title" %}selected{% endif %}>Parent Task</option>
+                                <option value="status" {% if request.GET.sort_by == "status" %}selected{% endif %}>Status</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary btn-sm btn-rounded">Sort</button>
+                        </form>
                     </div>
 
                     <div class="card-body">

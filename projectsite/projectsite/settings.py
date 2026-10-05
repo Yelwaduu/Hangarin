@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-leo)_gv^ul#kq+py1=ha=&$mlb7fs3wk=q_mwl8$*e76gzh(75
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['Dzodev.pythonanywhere.com.','127.0.0.1','localhost']
 
 
 # Application definition
@@ -40,7 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hangarinapp',
     'widget_tweaks',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github'
+
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+ 'django.contrib.auth.backends.ModelBackend',
+ 'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'projectsite.urls'
@@ -124,11 +139,35 @@ STATICFILES_DIRS = (
 )
 
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_URL = '/accounts/login/' # where @login_required will send users
+LOGIN_REDIRECT_URL = '/' # where to go after successful login
+LOGOUT_REDIRECT_URL = '/accounts/login/' # after logout, go back to login
+ACCOUNT_LOGOUT_ON_GET = True # logout immediately on GET
+ACCOUNT_LOGIN_METHODS = {"username", "email"} # allow login with username OR email
+ACCOUNT_SIGNUP_FIELDS = [
+ "username*",
+ "email*",
+ "password1*",
+ "password2*",
+]
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'loggers': {
+        'allauth': {'handlers': ['console'], 'level': 'DEBUG'},
     },
 }
