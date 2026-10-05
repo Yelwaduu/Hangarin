@@ -166,6 +166,92 @@ body,
 .page-title {
     color: #fff !important;
 }
+
+    .search-row { padding: 0 15px; }
+    .search-row .input-group { width: 100%; }
+    .action-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 15px;
+        padding: 0 15px;
+    }
+    .action-row .sort-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .action-row select.form-control {
+        width: auto;
+        min-width: 0;
+        flex: 1 1 auto;
+        max-width: 150px;
+    }
+    .action-row .btn {
+        height: 34px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .action-row .add-task { margin-left: auto; width: auto; }
+    .task-table th,
+    .task-table td { word-break: break-word; vertical-align: middle; }
+    @media (max-width: 991.98px) {
+        .task-table th,
+        .task-table td { font-size: 13px; padding: 0.5rem 0.4rem; }
+    }
+    @media (max-width: 767.98px) {
+        .task-table thead { display: none; }
+        .task-table,
+        .task-table tbody,
+        .task-table tr,
+        .task-table td { display: block; width: 100%; }
+        .task-table tr {
+            border: 1px solid #6B8E3A;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            padding: 6px 12px;
+        }
+        .task-table td {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            text-align: right;
+            border: none !important;
+            padding: 6px 0 !important;
+            font-size: 14px;
+        }
+        .task-table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #A3BF72;
+            text-align: left;
+        }
+        .task-table td[colspan] { justify-content: center; }
+        .card-body { padding: 10px !important; }
+    }
+    @media (max-width: 575.98px) {
+        .action-row { gap: 6px; }
+        .action-row .sort-form { gap: 6px; }
+        .action-row .btn { padding: 0 12px; font-size: 13px; }
+        .action-row select.form-control { padding-left: 0.7rem; font-size: 13px; }
+    }
+    @media (hover: none) {
+        .btn-success:hover,
+        .btn-primary:hover {
+            background-color: #6B8E3A !important;
+            border-color: #6B8E3A !important;
+            color: #fff !important;
+        }
+    }
 </style>
 
 <div class="content">
@@ -183,33 +269,23 @@ body,
 
                     <br />
 
-                    <div class="col-md-12 row">
-                        <div class="col-md-6">
-                            <form class="navbar-left navbar-form nav-search mr-md-3" method="get" action="">
-    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}" />
-    <div class="input-group">
-        <input type="text" placeholder="Search ..." class="form-control" name="q" value="{{ request.GET.q }}" />
-
-        <div class="input-group-append">
-            <button type="submit" class="input-group-text">
-        <i class="la la-search search-icon"></i>
-    </button>
-        </div>
-    </div>
-</form>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="pull-right">
-                                <a href="{% url 'category-add' %}" class="btn btn-success btn-rounded">
-                                    Add Category
-                                </a>
+                    <div class="search-row">
+                        <form class="navbar-form nav-search" method="get" action="">
+                            <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}" />
+                            <div class="input-group">
+                                <input type="text" placeholder="Search ..." class="form-control" name="q" value="{{ request.GET.q }}" />
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text">
+                                        <i class="la la-search search-icon"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-<div class="sort-bar">
-    <form method="get" class="d-flex align-items-center" style="gap: 10px;">
-        <input type="hidden" name="q" value="{{ request.GET.q }}" />
+
+                    <div class="action-row">
+                        <form method="get" class="sort-form">
+                            <input type="hidden" name="q" value="{{ request.GET.q }}" />
 
         <select class="form-control form-control-sm" name="sort_by">
             <option value="name" {% if request.GET.sort_by == "name" %}selected{% endif %}>Name (A-Z)</option>
@@ -218,10 +294,12 @@ body,
         </select>
 
         <button type="submit" class="btn btn-primary btn-sm btn-rounded">Sort</button>
-    </form>
-</div>
+                        </form>
+                        <a href="{% url 'category-add' %}" class="btn btn-success btn-sm btn-rounded add-task">Add Category</a>
+                    </div>
                     <div class="card-body">
-                        <table class="table table-striped mt-3">
+                        <div class="table-responsive">
+                        <table class="table table-striped mt-3 task-table">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
@@ -233,11 +311,13 @@ body,
                             <tbody>
                                 {% for object in object_list %}
                                 <tr>
-                                    <td>{{ object.id }}</td>
-                                    <td>{{ object.name }}</td>
-                                    <td>
-                                        <a href="category_list/{{ object.id }}">Edit</a>
-                                        <a href="category_list/{{ object.id }}/delete" class="text_danger">Delete</a>
+                                    <td data-label="ID">{{ object.id }}</td>
+                                    <td data-label="Name">{{ object.name }}</td>
+                                    <td data-label="Action">
+                                        <span>
+                                            <a href="category_list/{{ object.id }}">Edit</a>
+                                            <a href="category_list/{{ object.id }}/delete" class="text_danger">Delete</a>
+                                        </span>
                                     </td>
                                 </tr>
 
@@ -251,6 +331,7 @@ body,
                                 {% endfor %}
                             </tbody>
                         </table>
+                        </div>
 
                         {% include 'includes/pagination.html' %}
                     </div>
