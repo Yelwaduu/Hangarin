@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .delete-page .card {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #4a4a4a;
+        color: #f1f1f1;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        animation: slideFadeIn 0.5s ease-out both;
+    }
+
+    /* Full width on small screens */
+    @media (max-width: 767px) {
+        .delete-page .card { width: 100%; }
+    }
+
+    .delete-page .card-header {
+        border-bottom: 1px solid #626262;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .delete-page .card-title {
+        color: #fff;
+    }
+
+    .delete-page .card-category {
+        color: #ff5c5c;
+        font-weight: 700;
+    }
+
+    /* Centered content block, left-aligned text */
+    .delete-page .delete-wrap {
+        max-width: 480px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    .delete-page .delete-wrap p {
+        color: #fff !important;
+        margin-bottom: 20px;
+    }
+
+    /* Red, bold warning message */
+    .delete-page .delete-wrap .warning-text {
+        color: #ff5c5c !important;
+        font-weight: 700;
+    }
+
+    @keyframes slideFadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .delete-page .card { animation: none; }
+    }
+</style>
+
+<div class="content delete-page">
+    <div class="container-fluid">
+        <h4 class="page-title">Delete Task</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-title">Delete Category</div>
+                        <div class="card-category">This action cannot be undone</div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="delete-wrap">
+                            <form action="" method="post">
+                                {% csrf_token %}
+
+                                <p class="warning-text">
+                                    Are you sure you want to delete "{{ object }}"?
+                                </p>
+
+                                <a href="{% url 'category-list' %}" class="btn btn-secondary btn-rounded">Cancel</a>
+                                <button type="submit" class="btn btn-danger btn-rounded">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

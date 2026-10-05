@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: sans-serif; padding: 2rem;">
+    <h2>Third-Party Login Failure</h2>
+    <p><strong>Provider:</strong> {{ auth_error.provider }}</p>
+    <p><strong>Code:</strong> {{ auth_error.code }}</p>
+    <p><strong>Exception:</strong> {{ auth_error.exception }}</p>
+    <a href="{% url 'account_login' %}">Back to login</a>
+</body>
+</html>
