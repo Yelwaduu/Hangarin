@@ -16,18 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from hangarinapp.views import (HomePageView, TaskList, TaskCreate, TaskUpdate, TaskDelete, 
+from hangarinapp.views import (HomePageView, TaskList, TaskCreate, TaskUpdate, TaskDelete,
                                SubtaskList, SubtaskCreate, SubtaskUpdate, SubtaskDelete,
                                PriorityView, PriorityCreate, PriorityUpdate, PriorityDelete,
                                CategoryView, CategoryCreate, CategoryUpdate, CategoryDelete,
                                NoteView, NoteCreate, NoteUpdate, NoteDelete)
-from hangarinapp import views 
+from hangarinapp import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path('', views.HomePageView.as_view(), name='home'),
+    path('', include('pwa.urls')),
 
     path('task_list', TaskList.as_view(), name='task-list' ),
     path('task_list/add', TaskCreate.as_view(), name='task-add'),
